@@ -40,7 +40,12 @@ class CnvrgDataset:
         self.__timeout = timeout
 
 
-    def download_all_files(self, commit_sha1: str = None) -> None:
+
+    def download_dataset(self, commit_sha1: str = None, block: bool = False) -> threading.Thread:
+        if not block:
+            t = threading.Thread(target=self.download_dataset, args=(commit_sha1, True, ))
+            t.start()
+            return t
         self.__commit_sha1 = commit_sha1
         stats = self.__get_data_stats()
         self.__files_count = stats['commit_files']
@@ -48,9 +53,9 @@ class CnvrgDataset:
             self.__download_chunk()
 
 
-    def progress(self):
+    def progress(self) -> float:
         if(self.__files_count == 0):
-            return None
+            return 0.0
         return self.__downloaded / self.__files_count
 
 
@@ -88,7 +93,6 @@ class CnvrgDataset:
 
 
     def __download_file(self, file_obj):
-        print("Downloading {0}".format(file_obj['fullpath']))
         r = self.__session.get(file_obj['url'])
         path = os.path.join(self.__path, file_obj['path'])
         fullpath = os.path.join(self.__path, file_obj['fullpath'])
