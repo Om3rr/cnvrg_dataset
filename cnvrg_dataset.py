@@ -101,7 +101,7 @@ class CnvrgDataset:
         self.__downloaded += 1
 
     def __get_data_stats(self):
-        r = self.__session.get("{0}/files".format(self.__base_url), params={"limit": 0})
+        r = self.__session.get("{0}/files".format(self.__base_url), params={"limit": 0, "commit_sha1": self.__commit_sha1})
         return r.json()
 
 
