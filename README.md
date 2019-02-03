@@ -15,3 +15,9 @@ while t.is_alive():
     print("Progress: {0}%".format(round(cd.progress() * 100, 2)))
     time.sleep(5)
 ```
+
+
+
+credentials are taken from cnvrg credentials so be sure you are logged in through cnvrg cli.
+
+you can sign in by `cnvrg login` 
